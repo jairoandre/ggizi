@@ -9,7 +9,8 @@ module.exports = {
         filename: "bundle.js"
     },
   module: {
-    loaders: [{
+    loaders: [
+    {
       test: /\.js?$/,
       loader: 'react-hot!babel',
       exclude: /node_modules/,

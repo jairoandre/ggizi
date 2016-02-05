@@ -66,13 +66,12 @@ export default class SearchSummoner extends Component {
         left={10}
         top={10}
         status={this.state.status}
-        style={{display: 'inline-block', position: 'relative'}}
+        style={{position: 'absolute'}}
       />;
     }
 
     return (
       <div>
-        <Paper zDepth={2}>
           <AppBar
             title="GGIZI"
             iconClassNameRight="muidocs-icon-navigation-expand-more"
@@ -85,7 +84,6 @@ export default class SearchSummoner extends Component {
             <RaisedButton label="Search" onClick={handleSearch} secondary={true}/>
             <p>{this.state.summoner}</p>
           </div>
-        </Paper>
       </div>
     );
   }

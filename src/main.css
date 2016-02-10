@@ -1,0 +1,45 @@
+html {
+  box-sizing: border-box;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  background: #dfd;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, p, ul {
+  margin: 0;
+  padding: 0;
+}
+
+:global(.loading-enter) {
+  opacity: 0.01;
+}
+
+:global(.loading-enter.loading-enter-active) {
+  opacity: 1;
+  transition: opacity 500ms ease-in-out;
+}
+
+:global(.loading-leave) {
+  opacity: 1;
+}
+
+:global(.loading-leave.loading-leave-active) {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in-out;
+}
+
+.divTeste {
+  margin-bottom: 10px;
+  background: red;
+  width: 100px;
+  height: 50px;
+}

@@ -19,20 +19,31 @@ h1, h2, h3, h4, h5, h6, p, ul {
   padding: 0;
 }
 
-:global(.show-enter) {
+:global(.show-appear), :global(.show-enter) {
   opacity: 0.01;
 }
 
-:global(.show-enter.show-enter-active) {
+:global(.show-appear.show-appear-active), :global(.show-enter.show-enter-active) {
   opacity: 1;
   transition: opacity 300ms ease;
 }
 
+:global(.show-leave) {
+  opacity: 1;
+}
+
+:global(.show-leave.show-leave-active) {
+  opacity: 0.01;
+  transition: 250ms ease-in-out;
+}
+
 :global(.loading-enter) {
+  opacity: 0.01;
   transform: translateY(-200px);
 }
 
 :global(.loading-enter.loading-enter-active) {
+  opacity: 1;
   transition: 300ms ease;
   transform: translateY(0px);
 }

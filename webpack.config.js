@@ -23,7 +23,6 @@ module.exports = {
   postcss: [
     require('autoprefixer')
   ],
-  plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
     contentBase: "./public",
     colors: true,

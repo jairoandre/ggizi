@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import {Paper, TextField, AppBar, RaisedButton, Avatar, RefreshIndicator} from 'material-ui/lib';
+import {Paper, TextField, AppBar, RaisedButton, Avatar, RefreshIndicator, FontIcon} from 'material-ui/lib';
+import SummonerBadge from './SummonerBadge';
 
 const httpGet = (url) => {
   return new Promise(
@@ -28,13 +29,16 @@ const httpGet = (url) => {
     });
 }
 
-let id = 0;
+const httpResponseToJSONArray = (response) => {
+  let parsedJSON = JSON.parse(response);
+  return Object.keys(parsedJSON).map((key) => {return parsedJSON[key]});
+}
 
 export default class SearchSummoner extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {summoner: [], loading: false, url: ''};
+    this.state = {summoners: [], loading: false, url: ''};
   }
 
   render() {
@@ -53,11 +57,11 @@ export default class SearchSummoner extends Component {
     }
 
     const getByName = () => {
-      _setState({loading: true})
+      _setState({summoners: [], loading: true})
       httpGet(byName + this.refs.searchInput + apiKey).then(
         (response) => {
           _setState({loading: false});
-          setTimeout(() => {_setState({summoner: [response]})}, 300);
+          setTimeout(() => {_setState({summoners: httpResponseToJSONArray(response)})}, 300);
         },
         function (reason) {
           console.error('Ops! Something went wrong', reason)
@@ -86,22 +90,44 @@ export default class SearchSummoner extends Component {
         </div>);
     }
 
+    const searchForm = () => {
+      return (
+        <div style={{margin: '20px'}}>
+        <TextField ref="searchInput" fullWidth={true} floatingLabelText="Summoner" onChange={handleInputChange} />
+            <RaisedButton
+              onClick={handleSearch}
+              secondary={true}
+              icon={<FontIcon className="material-icons">search</FontIcon>}
+              label="SEARCH"/>
+        </div>
+        );
+    }
+
     return (
       <div>
           <AppBar
             title="GGIZI"
             iconClassNameRight="muidocs-icon-navigation-expand-more"
           />
+          <ReactCSSTransitionGroup
+                  transitionName="show"
+                  transitionEnterTimeout={300}
+                  transitionLeaveTimeout={250}>
+            {this.state.summoners.size > 0 ? '' : searchForm()}
+          </ReactCSSTransitionGroup>
           <div style={{padding: '20px'}}>
-            <TextField ref="searchInput" floatingLabelText="Summoner" onChange={handleInputChange} />            
-            <br/>
-            <RaisedButton label="Search" onClick={handleSearch} secondary={true}/>
-            <ReactCSSTransitionGroup 
-            transitionName="show"
-            transitionEnterTimeout={300}
-            transitionLeaveTimeout={250}>
-              {this.state.summoner.map((item) => {return (<div key="summoner">{item}</div>);})}
-            </ReactCSSTransitionGroup>
+            
+              <ReactCSSTransitionGroup
+                  transitionName="show"
+                  transitionEnterTimeout={300}
+                  transitionLeaveTimeout={250}>
+              {this.state.summoners.reverse().map((item, idx) => {
+                return (
+                    <SummonerBadge key={idx} summoner={item}/>
+                  );
+                })
+              }
+              </ReactCSSTransitionGroup>
           </div>
           <ReactCSSTransitionGroup 
             transitionName="loading"

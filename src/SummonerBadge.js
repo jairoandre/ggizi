@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import {Paper, TextField, AppBar, RaisedButton, Avatar, RefreshIndicator, FontIcon} from 'material-ui/lib';
+import {Card, CardHeader, CardMedia, CardTitle, CardText, CardActions, FlatButton} from 'material-ui/lib';
 
 const cdn = 'http://ddragon.leagueoflegends.com/cdn/';
 
@@ -15,10 +15,27 @@ export default class SummonerBadge extends Component {
   render() {
 
     return (
-      <div>
-        <img src={cdn + version + '/img/profileicon/' + this.props.summoner.profileIconId + '.png'}/>
-        <span style={{fontSize: '40px'}}>{this.props.summoner.name}</span>
-      </div>
+      <Card>
+        <CardHeader
+          title={this.props.summoner.name}
+          subtitle={'Level ' + this.props.summoner.summonerLevel}
+          avatar={cdn + version + '/img/profileicon/' + this.props.summoner.profileIconId + '.png'}
+        />
+        <CardMedia
+          overlay={<CardTitle title={this.props.summoner.name} subtitle={'Level ' + this.props.summoner.summonerLevel} />}>
+        </CardMedia>
+        <CardTitle title="Card title" subtitle="Card subtitle" />
+        <CardText>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+          Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+          Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+        </CardText>
+        <CardActions>
+          <FlatButton label="Action1" />
+          <FlatButton label="Action2" />
+        </CardActions>
+      </Card>      
       )
   } 
 

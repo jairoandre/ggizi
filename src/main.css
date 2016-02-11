@@ -19,13 +19,22 @@ h1, h2, h3, h4, h5, h6, p, ul {
   padding: 0;
 }
 
-:global(.loading-enter) {
+:global(.show-enter) {
   opacity: 0.01;
 }
 
-:global(.loading-enter.loading-enter-active) {
+:global(.show-enter.show-enter-active) {
   opacity: 1;
-  transition: opacity 500ms ease-in-out;
+  transition: opacity 300ms ease;
+}
+
+:global(.loading-enter) {
+  transform: translateY(-200px);
+}
+
+:global(.loading-enter.loading-enter-active) {
+  transition: 300ms ease;
+  transform: translateY(0px);
 }
 
 :global(.loading-leave) {
@@ -34,7 +43,7 @@ h1, h2, h3, h4, h5, h6, p, ul {
 
 :global(.loading-leave.loading-leave-active) {
   opacity: 0.01;
-  transition: opacity 300ms ease-in-out;
+  transition: 250ms ease-in-out;
 }
 
 .divTeste {

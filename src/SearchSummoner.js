@@ -34,7 +34,7 @@ export default class SearchSummoner extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {summoner: [], status: 'ready', url: '', divs: []};
+    this.state = {summoner: [], loading: false, url: ''};
   }
 
   render() {
@@ -53,38 +53,37 @@ export default class SearchSummoner extends Component {
     }
 
     const getByName = () => {
+      _setState({loading: true})
       httpGet(byName + this.refs.searchInput + apiKey).then(
         (response) => {
-          _setState({status: 'ready', summoner: response});
+          _setState({loading: false});
+          setTimeout(() => {_setState({summoner: [response]})}, 300);
         },
         function (reason) {
           console.error('Ops! Something went wrong', reason)
-          _setState({status: 'ready'});
+          _setState({loading: false});
         }
       );
     }
 
-    const setStatus = (_status) => {
-      this.setState({...this.state, status: _status});
+    const setLoading = (_loading) => {
+      this.setState({...this.state, loading: _loading});
     }
 
     const handleSearch = () => {
-      _setState({divs: [...this.state.divs, <div key={++id} className={styles.divTeste}>Teste {id}</div>]})
-      // setStatus('loading');
-      // setTimeout(() => {setStatus('ready')}, 3000);
+      getByName();
     }
 
     const loading = () => {
       return (
-      <ReactCSSTransitionGroup transitionName="loading"
-        transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-        <RefreshIndicator
-          key='loading'
-          size={50}
-          left={window.innerWidth/2 - 25}
-          top={100}
-          status={this.state.status}/>
-      </ReactCSSTransitionGroup>);
+        <div style={{position: 'absolute', left: (window.innerWidth/2 - 25)}}>
+          <RefreshIndicator
+            key='loading'
+            size={50}
+            left={0}
+            top={0}
+            status='loading'/>
+        </div>);
     }
 
     return (
@@ -95,16 +94,20 @@ export default class SearchSummoner extends Component {
           />
           <div style={{padding: '20px'}}>
             <TextField ref="searchInput" floatingLabelText="Summoner" onChange={handleInputChange} />            
-            {(this.state.status == 'loading') ? loading() : ''}
             <br/>
             <RaisedButton label="Search" onClick={handleSearch} secondary={true}/>
-            <p>{this.state.summoner}</p>
+            <ReactCSSTransitionGroup 
+            transitionName="show"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={250}>
+              {this.state.summoner.map((item) => {return (<div key="summoner">{item}</div>);})}
+            </ReactCSSTransitionGroup>
           </div>
           <ReactCSSTransitionGroup 
             transitionName="loading"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}>
-            {this.state.divs}
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={250}>
+            {this.state.loading ? loading() : ''}
           </ReactCSSTransitionGroup>
       </div>
     );

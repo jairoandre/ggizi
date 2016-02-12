@@ -76,24 +76,18 @@ export default class SearchSummoner extends Component {
             title="GGIZI"
             iconClassNameRight="muidocs-icon-navigation-expand-more"
           />
-          <ReactCSSTransitionGroup
-                  transitionName="show"
-                  transitionEnterTimeout={300}
-                  transitionLeaveTimeout={250}>
-            {this.state.summoners.size > 0 ? '' : searchForm()}
-          </ReactCSSTransitionGroup>
+          {searchForm()}
           <div style={{padding: '20px'}}>
             
               <ReactCSSTransitionGroup
                   transitionName="show"
                   transitionEnterTimeout={300}
                   transitionLeaveTimeout={250}>
-              {this.state.summoners.reverse().map((item, idx) => {
-                return (
-                    <SummonerBadge key={idx} summoner={item}/>
-                  );
-                })
-              }
+                {
+                  this.state.summoners.reverse().map((item, idx) => {
+                    return (<SummonerBadge key={idx} summoner={item}/>);
+                  })
+                }
               </ReactCSSTransitionGroup>
           </div>
           <ReactCSSTransitionGroup 

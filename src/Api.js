@@ -1,8 +1,8 @@
-
-
 const apiKey = '?api_key=bfea1361-9fff-45f8-a8c0-1ff8025da116';
 
 const cdn = 'http://ddragon.leagueoflegends.com/cdn/';
+
+const language = 'pt_BR';
 
 const version = '6.3.1';
 
@@ -19,6 +19,30 @@ const matchlistUrl = apiUrl + '/v2.2/matchlist/by-summoner/';
 const profilePicPath = '/img/profileicon/';
 
 const _png  = '.png';
+
+let champions;
+
+export const getChampionByKey = (key) => {
+  let champion = champions.filter((_champion) => {return _champion.key == key});
+  return champion.length > 0 ? champion[0] : null;
+}
+
+export const getChampions = () => {
+  if(!champions){
+    let url = cdn + version + '/data/' + language + '/champion.json';
+    httpGet(url).then(
+      (resp) => {
+        let parsedResponse = JSON.parse(resp).data;
+        champions = Object.keys(parsedResponse).map((innerKey) => {return parsedResponse[innerKey]});
+        return champions;
+      },
+      (error) => {console.log('Error on retrieving champion info: ' + error);}
+    ); 
+  } else {
+    return champions;
+  }
+  
+}
 
 export const getSummonersByName = (names) => {
   return httpGet(summonerByName + names + apiKey);

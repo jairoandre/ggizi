@@ -44,7 +44,8 @@ export default class SummonerBadge extends Component {
       {
         this.state.matches.matches ? 
         this.state.matches.matches.map((match, idx) => {
-          return (<div key={idx}>
+          return (
+            <div key={idx}>
               {getChampionByKey(match.champion).name}
               <div>{toDate(match.timestamp)}</div>
             </div>)}) : ''}
@@ -62,10 +63,6 @@ export default class SummonerBadge extends Component {
           <Card secondary={true} style={{width: 'auto', position: 'absolute', top: '5', right: '5'}}><CardText style={{color: '#ffffff', background: '#51878C'}}>{this.state.matches.totalGames} Fetched Games</CardText></Card>
           {this.state.loading ? 'Carregando...' : matchList()}
         </CardText>
-        <CardActions>
-          <FlatButton label="Action1" />
-          <FlatButton label="Action2" />
-        </CardActions>
       </Card>
       
       )

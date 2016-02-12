@@ -2,37 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import {Paper, TextField, AppBar, RaisedButton, Avatar, RefreshIndicator, FontIcon} from 'material-ui/lib';
 import SummonerBadge from './SummonerBadge';
-
-const httpGet = (url) => {
-  return new Promise(
-    function (resolve, reject) {
-
-      var req = new XMLHttpRequest();
-
-      req.open('GET', url);
-
-      req.onload = () => {
-        if (req.status === 200) {
-          // Success
-          resolve(req.response);
-        } else {
-          // Something went wrong (404 etc.)
-          reject(new Error(req.statusText));
-        }
-      };
-
-      req.onerror = () => {
-        reject(new Error(
-          'XMLHttpRequest Error: ' + req.statusText));
-      };
-      req.send();
-    });
-}
-
-const httpResponseToJSONArray = (response) => {
-  let parsedJSON = JSON.parse(response);
-  return Object.keys(parsedJSON).map((key) => {return parsedJSON[key]});
-}
+import {getSummonersByName, httpResponseToJSONArray} from './Api';
 
 export default class SearchSummoner extends Component {
 
@@ -42,9 +12,6 @@ export default class SearchSummoner extends Component {
   }
 
   render() {
-
-    const apiKey = '?api_key=bfea1361-9fff-45f8-a8c0-1ff8025da116';
-    const byName = 'https://br.api.pvp.net/api/lol/br/v1.4/summoner/by-name/';
 
     const styles = require('./main.css');
 
@@ -58,7 +25,7 @@ export default class SearchSummoner extends Component {
 
     const getByName = () => {
       _setState({summoners: [], loading: true})
-      httpGet(byName + this.refs.searchInput + apiKey).then(
+      getSummonersByName(this.refs.searchInput).then(
         (response) => {
           _setState({loading: false});
           setTimeout(() => {_setState({summoners: httpResponseToJSONArray(response)})}, 300);

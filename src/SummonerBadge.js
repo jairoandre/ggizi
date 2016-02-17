@@ -43,7 +43,7 @@ export default class SummonerBadge extends Component {
     return (<div>
       {
         this.state.matches.matches ? 
-        this.state.matches.matches.map((match, idx) => {
+        this.state.matches.matches.slice(0,10).map((match, idx) => {
           return (
             <div key={idx}>
               {getChampionByKey(match.champion).name}

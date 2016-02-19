@@ -18,6 +18,10 @@ const matchlistUrl = apiUrl + '/v2.2/matchlist/by-summoner/';
 
 const profilePicPath = '/img/profileicon/';
 
+const gameUrl = apiUrl + '/v1.3/game/by-summoner/';
+
+const gameUrlPosFix = '/recent';
+
 const _png  = '.png';
 
 let champions;
@@ -50,6 +54,10 @@ export const getSummonersByName = (names) => {
 
 export const getMatchList = (summonerId) => {
   return httpGet(matchlistUrl + summonerId + apiKey);
+}
+
+export const getRecentGames = (summonerIds) => {
+  return httpGet(gameUrl + summonerIds + gameUrlPosFix + apiKey);
 }
 
 export const httpGet = (url) => {

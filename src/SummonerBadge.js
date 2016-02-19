@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import {Card, CardHeader, CardMedia, CardTitle, CardText, CardActions, FlatButton, Badge} from 'material-ui/lib';
-import {profilePicUrl, getMatchList, httpResponseToJSONArray, getChampionByKey, getChampions} from './Api';
+import {profilePicUrl, getRecentGames, httpResponseToJSONArray, getChampionByKey, getChampions} from './Api';
 
 
 const toDate = (timestamp) => {
@@ -22,13 +22,13 @@ export default class SummonerBadge extends Component {
 
   constructor(props) {
     super(props);    
-    this.state = {matches: {}, loading: true, champions: []};
+    this.state = {games: {}, loading: true, champions: []};
   }
 
   componentWillMount() {
-    Promise.all([getMatchList(this.props.summoner.id), getChampions()]).then(
+    Promise.all([getRecentGames(this.props.summoner.id), getChampions()]).then(
         (resp) => {
-          this.setState({...this.state, matches: JSON.parse(resp[0]), champions: resp[1], loading: false});
+          this.setState({...this.state, games: JSON.parse(resp[0]), champions: resp[1], loading: false});
         },
         (reason) => {
           console.error('Ops! Something went wrong', reason);
@@ -42,12 +42,12 @@ export default class SummonerBadge extends Component {
     const matchList = () => {
     return (<div>
       {
-        this.state.matches.matches ? 
-        this.state.matches.matches.slice(0,10).map((match, idx) => {
+        this.state.games.games ? 
+        this.state.games.games.map((game, idx) => {
           return (
             <div key={idx}>
-              {getChampionByKey(match.champion).name}
-              <div>{toDate(match.timestamp)}</div>
+              {getChampionByKey(game.championId).name}
+              <div>{toDate(game.createDate)}</div>
             </div>)}) : ''}
         </div>);
     }
@@ -60,7 +60,9 @@ export default class SummonerBadge extends Component {
           avatar={profilePicUrl(this.props.summoner.profileIconId)}>
         </CardHeader>          
         <CardText>
-          <Card secondary={true} style={{width: 'auto', position: 'absolute', top: '5', right: '5'}}><CardText style={{color: '#ffffff', background: '#51878C'}}>{this.state.matches.totalGames} Fetched Games</CardText></Card>
+          <Card secondary={true} style={{width: 'auto', position: 'absolute', top: '5', right: '5'}}>
+            <CardText style={{color: '#ffffff', background: '#51878C'}}>{this.state.games.size} Fetched Games</CardText>
+          </Card>
           {this.state.loading ? 'Carregando...' : matchList()}
         </CardText>
       </Card>
